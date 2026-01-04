@@ -20,12 +20,14 @@ func main() {
 	defer config.DisconnectDB()
 
 	r := mux.NewRouter()
-
-	// r.HandleFunc("/items", GetItems).Methods("GET")
-	r.HandleFunc("/user", handlers.CreateItem).Methods("POST")
-	// r.HandleFunc("/items/{id}", GetItem).Methods("GET")
-	// r.HandleFunc("/items/{id}", UpdateItem).Methods("PUT")
-	// r.HandleFunc("/items/{id}", DeleteItem).Methods("DELETE")
+	r.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Welcome to the User Management API"))
+	})
+	r.HandleFunc("/users", handlers.GetUsers).Methods("GET")
+	r.HandleFunc("/user", handlers.CreateUser).Methods("POST")
+	r.HandleFunc("/user/{id}", handlers.GetUser).Methods("GET")
+	r.HandleFunc("/user/{id}", handlers.UpdateUser).Methods("PUT")
+	r.HandleFunc("/user/{id}", handlers.DeleteUser).Methods("DELETE")
 	fmt.Printf("your server is running on port 8080")
 	log.Fatal(http.ListenAndServe(":8080", r))
 
